@@ -2,7 +2,7 @@ export type BudgetActions = { type: "add-Budget", payload:{budget: number}} // t
 export type BudgetState = { budget: number} // tipo de dato BudgetState
 
 export const intialState:BudgetState = { // constante initialState de tipo BudgetState
-    budget: 0
+    budget: 0,
 }
 
 export const budgetReducer = ( 
