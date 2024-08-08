@@ -1,8 +1,9 @@
-export type BudgetActions = { type: "add-Budget", payload:{budget: number}} // tipo de dati BudgetActions
-export type BudgetState = { budget: number} // tipo de dato BudgetState
+export type BudgetActions = { type: "add-Budget", payload:{budget: number}} | {type: "show-modal"} | {type: "close-modal"}
+export type BudgetState = { budget: number, modal: boolean} // tipo de dato BudgetState
 
 export const intialState:BudgetState = { // constante initialState de tipo BudgetState
-    budget: 0,
+    budget: 0, 
+    modal: false
 }
 
 export const budgetReducer = ( 
@@ -15,5 +16,20 @@ export const budgetReducer = (
             ...state, budget: action.payload.budget // lo que hace mi condicional, copia del state y budget
         }
     }
+
+    if(action.type === "show-modal"){
+        return {
+            ...state, 
+            modal: true
+        }
+    }
+
+    if(action.type === "close-modal"){
+        return {
+            ...state, 
+            modal: false
+        }
+    }
+
     return state    
 }
