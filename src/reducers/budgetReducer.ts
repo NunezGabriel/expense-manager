@@ -1,19 +1,33 @@
-export type BudgetActions = { type: "add-Budget", payload:{budget: number}} | {type: "show-modal"} | {type: "close-modal"}
-export type BudgetState = { budget: number, modal: boolean} // tipo de dato BudgetState
+import { DraftExpense, Expense } from "../types"
+import {v4 as uuidv4} from 'uuid'
 
-export const intialState:BudgetState = { // constante initialState de tipo BudgetState
-    budget: 0, 
-    modal: false
+
+export type BudgetActions = { type: "add-Budget", payload:{budget: number}} | {type: "show-modal"} | {type: "close-modal"} | {type: "add-expense", payload: {expense: DraftExpense}}
+
+export type BudgetState = { budget: number, modal: boolean, expenses: Expense[]} 
+
+export const intialState:BudgetState = {
+    budget: 0,
+    modal: false,
+    expenses: []
 }
+
+const createExpense = (draftExpense: DraftExpense): Expense =>{
+    return {
+        ...draftExpense,
+        id: uuidv4()
+    }
+}
+
 
 export const budgetReducer = ( 
     state: BudgetState = intialState, 
     action: BudgetActions
-) =>{ // Mi reducer que  tiene atributos state y action con sus respetivos tipos de datos
+) =>{ 
 
-    if (action.type === "add-Budget") { // mi condicional para validar ejecutar algo dependiendo lo que setee el dispatch
+    if (action.type === "add-Budget") { 
         return {
-            ...state, budget: action.payload.budget // lo que hace mi condicional, copia del state y budget
+            ...state, budget: action.payload.budget 
         }
     }
 
@@ -27,6 +41,17 @@ export const budgetReducer = (
     if(action.type === "close-modal"){
         return {
             ...state, 
+            modal: false
+        }
+    }
+
+    if(action.type === "add-expense"){
+
+        const expense = createExpense(action.payload.expense)
+
+        return {
+            ...state, 
+            expenses: [...state.expenses, expense],
             modal: false
         }
     }
